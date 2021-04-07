@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<!--
+ SIV3014 GROUP PROJECT
+ Group B | Semester 1, Session 2020/2021
+ 
+ Group Members:
+ 1.	17141261	PUTRI NUR FATIN BINTI AMIR RUDIN
+ 2.	17075500	NOR MIMI FARAR HANA BINTI MOHD POZI
+ 3.	17168579	FARAH AISHA BINTI BAHRON
+ 4.	17160168	SAMANTHA SOH ERN JIE
+ 5.	17100334	LEE JIAN DI
+
+ File: home.html
+ - The first / home page of the 'Nucleotide Calculator' simple web application, giving brief information and details
+ - User can navigate through the set of web pages, i.e. 'Home', 'About Us' and 'Get Started'.
+
+PSEUDOCODE:
+1.	Create <html> tag to define the HTML document
+2.	Create <title> tag to define the title for the HTML document
+3.	Define the header using <head> tag. The header contains:
+	- Embedded link to online-imported external style sheet css file (homestyle.css) for attractive styling
+	- Embedded link to local external CSS style sheet
+4.	Create <body> tag to define the document's body. 
+	The body is divided into 4 sections, each of which with classes defined in external CSS file: 
+	4.1	Navigation bars: embeded links to 'Home', 'About Us' and 'Get Started' pages
+		4.1.1	'Home' page (home.html)
+				- Bring user to this home page.
+		4.1.2	'About Us' page (about.html)
+				- Bring user to the information about the purpose of this web application and also its developers.
+		4.1.3	'Get Started' page (SIV3014_GroupB_Main.html)
+				- Bring user to the implementation page of the web application
+	4.2	Page content: provide user with some introduction about the website
+	4.3	Background image: make webpage to appear more interesting and beautiful
+	4.4	Footer: provide user with copyright information and links to 'About Us' page
+	
+ -->
+
+<html lang="en">	<!-- Open html tag -->
+
+  <head>	<!-- Open head tag -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homestyle.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <title>Nucleotide Calculator: Home</title>
+  </head>
+  
+  <body>
+    <div class="grid-wrapper">
+	
+	  <div class="header">
+		<!-- Navigation Section -->
+        <div class="navigation">
+          <li><a href="home.html">Home</a></li>											  <!-- Link to home page-->
+          <li><a href="about.html">About Us</a></li>									  <!-- Link to about us page-->
+          <li class="get-started"><a href="SIV3014_GroupB_Main.html">Get Started</a></li>     <!-- Link to query page -->
+        </div>
+      </div>
+	  
+	  <!-- Content Section -->
+      <div class="aside">
+        <h1>Nucleotide Calculator</h1>                                                         <!-- Main title -->
+        <h3>Home Page</h3>															  <!-- Sub main title -->
+        <p>
+          Welcome!
+		  <br><br>
+		  In recent years, the volume and diversity of biological data has been growing and raising in many
+		  forms. To understand and learn from these data, visualization of biological data can be applied 
+		  especially for genomics and assembly data, sequence alignments, phylogeny and evolution,
+		  systems biology, molecular graphics as well as information and knowledge visualization.
+		  <br><br>
+		  This system includes the application of various programming concepts and techniques 
+		  such as SVG, CSS, JavaScript, HTML and XML programming languages.
+        </p>
+      </div>
+	  
+	  <!-- Background image Section -->
+      <div class="background"></div>                            <!-- Background image -->
+	  
+	  <!-- Footer Section -->
+      <div class="footer">
+		<p>Copyright &copy; 2020 | Designed by <a href="about.html" target="_blank"> Putri, Mimi, Farah, Samantha, Jian Di</a></p>
+      </div>
+    
+	</div>
+
+
+</body>
+</html>

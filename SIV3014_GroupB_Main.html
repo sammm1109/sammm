@@ -1,0 +1,575 @@
+
+<!--
+ SIV3014 GROUP PROJECT
+ Group B | Semester 1, Session 2020/2021
+ 
+ Group Members:
+ 1.	17141261	PUTRI NUR FATIN BINTI AMIR RUDIN
+ 2.	17075500	NOR MIMI FARAR HANA BINTI MOHD POZI
+ 3.	17168579	FARAH AISHA BINTI BAHRON
+ 4.	17160168	SAMANTHA SOH ERN JIE
+ 5.	17100334	LEE JIAN DI
+
+ File: SIV3014_GroupB_Main.html
+ - Implementation page of the web application of this project
+
+PSEUDOCODE:
+1. Create <html> tag to define the HTML document
+2. Create <title> tag to define the title for the document
+3. Define the header using <head> tag. Inside the header contains : 
+	- 3.1 Embedded external JavaScript 
+    - 3.2 Internal CSS Style to define style information for HTML. Consists of : 
+        > 3.2.1 Element selector
+        	+ body, table, td, thead, tbody
+        > 3.2.2 Class selector (using ".")
+            + page_container, heading, footer
+        > 3.2.3 Id selector (using "#")
+            + result
+    - 3.3 External CSS Script (used for SVG element in 4.4 & 4.5)
+4. Create <body> tag to define the document's body. Inside the body : 
+	- 4.1 SVG Element (for the group members name and main title text), not using CSS
+		> Create SVG element with <svg> tag & define the svg attributes (viewbox, xml namespace)
+    	> 4.1.1 Create group member text box using rectangle shape
+        > 4.1.2 Create group text of same colour (text for "group B project" & "group member")
+        > 4.1.3 Create group text with same font type,font size 10 & bold (text for group member names)
+        > 4.1.4 Create group text with same font colour & bold (text for main title & text to ask for user input)
+
+	- 4.2 HTML Form (to get user input), use internal CSS Style
+        > Create <form> tag to define HTML form for user input
+        > 4.2.1 Create <textarea> tag to define a multiline input control & set the id to
+        	"sequence" (will be used to store user input and pass to JavaScript)
+        > 4.2.2 Define <input> tags where the user can enter data. Consists of:
+            + Button type attribute for:
+            	# "Calculate" - When click, will call the function "showTable" inside JavaScript (refer to 4.3)
+            	# "Plot Bar Chart" - When click, will call the function "getBarChart" inside JavaScript (refer to 4.4)
+            	# "Plot Histogram" - When click, will call the function "getHisto" inside JavaScript (refer to 4.5)
+            + Reset type attribute - When click, will call the function "hide" inside JavaScript
+        
+    - 4.3 HTML Table (table to store information of user input), use internal & inline CSS style (refer to 3.2)
+        > Create a section in the document using <div> tag with id "results", the element styled using CSS Id selector 
+        > Create table (5x3) and define the class as "table", styled using CSS Class Selector & Element Selector. Inside the table:
+            + 4.3.1 Table Header using <thead> tag, contains 3 main columns :
+				# "Base" - Nucleotide Base (ATCG)
+				# "Count" - Occurence of each base inside the input
+				# "%" - Percentage of base occurence inside the input
+			+ 4.3.2 Table Body using <tbody> tag, contains 4 rows
+                # 2nd row : Contains information of base A
+				# 3rd row : Contains information of base T
+				# 4th row : Contains information of base C
+				# 5th row : Contains information of base G
+
+	- 4.4 SVG Element (to create bar chart which contains comparison of AT vs GC percentage content), & keep it hidden. Styled using External CSS.
+		> Create a section in the document using <div> tag with class "container"(will make the section center)
+		> Create SVG element with <svg> tag & define the svg attributes (viewbox, xml namespace)
+		> 4.4.1 Fill the background of the canvas with white rectangle (for better readability) (use class "rectBG" for styling)
+		> 4.4.2 Draw x-Axis line (width 500), use line (use class "axis" for styling)
+		> 4.4.3 Create the gridlines, use path  (use id selector for styling)
+		> 4.4.4 Create & group the bars (same attribute, use class "bar" to set the attribute). Make the width 150, height dynamically change based on the input. Consist of :
+			+ 4.4.4a AT Percentage Bar. On mouseover, bar will change colour to red & the text boxt with AT percentage will appear (need to call the JS function that will return the value of the text)
+			+ 4.4.4b GC. Same thing will happen as 4.4.4a
+		> 4.4.5 Graph labelling (use class "label" for same colour). Consist of:
+			+ Main title. The text will change colour & underlined 
+			when mouseover (use class "titleGraph" for styling)
+			+ Bar label ("AT" & "GC")
+			+ Axis Line Label ("content"). Will change colour when mouseover  (use class "axisLabel" for styling)
+		> 4.4.6 Create a textbox that has the percentage of the AT/GC when hover over the respective bar. Initially hidden. Made up of:
+			+ Base rectangle, fill with white. The size will be change relative to text length.
+			+ Shadow rectangle, fill with blue. Same as base rectangle, size will change dynamically.
+			+ Text that will display the data.
+		> 4.4.7 Create internal JavaScript that will display 4.4.6
+			+ 4.4.7a Define all the variables 
+			+ 4.4.7b Define the event. Occur within the area of the bar (use for loop)
+				#if mouseover, will call function that will display 4.4.6
+				#if mouseout, will call function that will hide 4.4.6
+			+ 4.4.7c Function definition that shows 4.4.6
+				# Get the mouse cursor position & move the text box relative to the cursor
+				# Set the visibility of 4.4.6 to visible
+				# Change the size of the text box relative to text length
+			+ 4.4.7d Function definition that hides 4.4.6
+				# set the visibility of 4.4.6 to hidden
+
+	- 4.5 SVG Element (to create histogram which contains the percentage of nucleotide base content), & keep it hidden. Styled using External CSS.
+		> Create a section in the document using <div> tag with class "container"(will make the section center)
+		> Create SVG element with <svg> tag & define the svg attributes (viewbox, xml namespace)
+		> 4.5.1 Fill the background of the canvas with white rectangle (for better readability) (reuse the class "rectBG")
+		> 4.5.2 Draw axis line (reuse the class "axis"). Consist of:
+			+ x-Axis : width 450
+			+ y-Axis : height 360
+		> 4.5.3 Create & group the bars (reuse class "bar"). Make the height 80, width dynamically change based on the input. Consist of :
+			+ 4.5.3a Bar A. Colour of selected bar will change to green and other bar opacity reduced. Bar percentage will appear upon mouseover (need to call the JS function that will return the value of the text)
+			+ 4.5.3b Bar T. Bar chg to blue & same event as 4.5.3a
+			+ 4.5.3c Bar C. Bar chg to red & same event as 4.5.3a
+			+ 4.5.3d Bar G  Bar chg to yellow & same event as 4.5.3a
+		> 4.5.4 Graph labelling (reuse class "label"). Consist of:
+			+ Main title. The text will change colour & underlined 
+			when mouseover (reuse class "titleGraph")
+			+ Bar label ("A", "T", "C", "G")
+			+ Axis Line Label ("content" & "nucleotide base"). Will change colour when mouseover (reuse class "axisLabel")
+		> 4.5.5 Create a textbox that has the percentage of the A/T/G/C when hover over the respective bar (repeat 4.4.6)
+		> 4.5.6 Create internal JavaScript that will display 4.5.5 (repeat 4.4.7 & change the svg element id)
+
+5. Create <footer> tag to define the HTML footer, using CSS element selector (refer to 3.2)
+    > Create a paragraph of text using <p> tag (text for copyright)
+-->
+
+<!-- 1. Defines the HTML document -->
+<html> 
+
+<!-- 2. Define the title for the document -->
+<title>
+    Group B project
+</title>
+
+<!-- 3. Define the header -->
+<head>
+    <!-- 3.1 Embed external JavaScript inside this HTML script -->
+    <script type="text/javascript" src="SIV3014_GroupB_Javascript.js"></script> 
+	
+	<!-- 3.2 Internal CSS Style for HTML elements -->
+    <style>
+		/* Id selector */
+		
+		#results {
+			display: none;
+        } /* refer to 4.3 */
+		
+		/* Element selector */
+        
+		body {
+            background-image: url('SIV3014_GroupB_Background.jpg');	/* set the backgorund image used */
+			background-size: cover;                    				/* specifies the size of the background images to cover the entire container, even if it has to stretch the image or cut a little bit off one of the edges */
+			background-color: gray;              					/* set the background colour of the image */
+			background-blend-mode: screen;            				/* specify the blending mode of a background-image to be screen */
+        } /* refer to 4 */
+		
+		textarea{
+			font-family: courier; 
+			font-size: 90%;
+		} /* refer to 4.2 */
+		
+		input[type=button], input[type=reset]{
+			padding: 5px; 
+			background-color: #add8e6; 								/* button background set to light blue */
+			border-radius: 5px;
+			font-family: sans-serif; 
+			font-size: 80%;
+		} /* refer to 4.2 */
+				
+		table, th, td {
+            border: 1px solid black;
+        } /* refer to 4.3.1 - 4.3.2 */
+        
+		thead{
+            background-color: lightpink;
+			font-weight: bold;
+			text-align: center;
+        } /* refer to 4.3.1 */
+        
+		tbody{
+            background-color: #cce5ff;
+            text-align: center;
+        } /* refer to 4.3.2 */
+		
+		
+		/* Class selector */
+		.tableSize {
+            width: 30%;
+        } /* refer to 4.3 */
+		
+        .footer {
+            position: fixed;
+            bottom: -5px;
+            left: 0px;
+            width: 100%;
+            height: 50px;
+            background-color: #cce5ff;
+            text-align: center;
+            opacity: 0.7;
+        } 
+    </style> <!-- end of CSS Inline Style -->
+
+    <!-- 3.3 External CSS Style (used in 4.3, 4.4, 4.5) -->
+    <link rel = "stylesheet" href = "SIV3014_GroupB_External_CSS.css">
+</head> <!-- end of header -->
+	
+<!-- 4. Define the body, uses CSS Element Selector -->
+<body> 
+
+	<!-- 4.1 SVG Element (for the group members name & main title) -->
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 105">
+		<!-- 4.1.1 Group member text box -->
+		<rect x="700" y="5" width="290" 
+			height="100" fill="white" stroke="black" stroke-width="1" opacity="0.8"/>
+
+		<!-- 4.1.2 Group text of same colour -->
+		<g fill="#000099" font-weight="bold" > 
+			<text x="10" y="20" font-size="20">SIV3014 (Graphics and Data Visualization in Bioinformatics) - Group Project</text>
+			<text x="780" y="20" font-size="15" font-family="sans-serif"> Group B Members: </text>
+		</g>
+
+		<!-- 4.1.3 Group text of same font size, type & bold -->
+		<g font-size="10" font-weight="bold" font-family="sans-serif">
+			<text x="720" y="35"> PUTRI NUR FATIN BINTI AMIR RUDIN (17141261) </text>
+			<text x="720" y="50"> NOR MIMI FARAR HANA BINTI MOHD POZI (17075500) </text>
+			<text x="720" y="65"> FARAH AISHA BINTI BAHRON (17168579) </text>
+			<text x="720" y="80"> SAMANTHA SOH ERN JIE (17160168) </text>
+			<text x="720" y="95"> LEE JIAN DI (17100334) </text>
+		</g>
+
+		<!-- 4.1.4 Group text of same colour & bold -->
+	    <g fill="black" font-weight="bold">
+	    	<!-- Text for main title -->
+		    <text x="10" y="60" font-size="40" fill="black">Nucleotide Calculator</text>
+		   <!-- Text to ask user to enter input -->
+	       <text x="10" y="100" font-size="20">Please enter a DNA sequence in the space box given below: </text>
+	    </g>
+	</svg> <!-- end of svg script -->
+	
+	<hr> <!-- horizontal line -->
+	
+	<!-- 4.2 HTML Form (to get user input) -->
+	<form>
+		<!-- 4.2.1 Multiline text box to get input sequence from user -->
+		<br><textarea id ="sequence" name="sequence" rows="8" cols="80" placeholder="Enter DNA sequence (e.g.: 'acgt' or 'ACGT')"></textarea><br><br> 
+		<!-- 4.2.2 Input button that will ganerate different output when click by user -->
+		<!-- call function "showInfo" when click, will display (4.3) -->
+		<input type="button" value="Calculate" onclick="showInfo(sequence)"/>&nbsp;&nbsp; 
+		<!-- call function "getBarChart" when click, will display (4.4) -->
+		<input type="button" id="histo" value="Plot Bar Chart" onclick="getBarChart(sequence)"/>&nbsp;&nbsp;
+		<!-- call function "getHisto" when click, will display (4.5) --> 
+		<input type="button" value="Plot Histogram" onclick="getHisto(sequence)"/>&nbsp;&nbsp;	 
+		<!-- call function "hide" when click, will reset the input and output --> 
+		<input type="reset" value="Reset" onclick="hide()"/>
+	</form><br>
+	
+	<!-- 4.3 Table (to store results), hidden on page load -->
+    <div id="results" align="center"> <!--  Division / section in HTML document with id "results", aligned at center -->
+       <table class="tableSize"> <!-- table width styled with CSS class selector -->
+             <!-- 4.3.1 Table header -->
+            <thead>
+                <tr> <!-- 1st row, contains 3 column -->
+                    <td>Base</td><td>Count</td><td>%</td>
+                </tr>
+            </thead>
+
+            <!-- 4.3.2 Table body -->
+            <tbody> 
+                <!-- 2nd row, information of base "A" -->
+                <tr> 
+                    <td>A</td><td id="A">0</td><td id="a_perc">0</td>
+                </tr>
+
+                <!-- 3rd row, information of base "T" -->
+                <tr>
+                    <td>T</td><td id="T">0</td><td id="t_perc">0</td>
+                </tr>
+
+                <!-- 4th row, information of base "C" -->
+                <tr>
+                    <td>C</td><td id="C">0</td><td id="c_perc">0</td>
+                </tr>
+
+                <!-- 5th row, information of base "G" -->
+                <tr>
+                    <td>G</td><td id="G">0</td><td id="g_perc">0</td>
+                </tr>
+            </tbody>
+        </table> <!-- end of table -->
+    </div> <!-- end of div element -->
+    
+    <!-- 4.4 Bar Chart, aligned center to the page -->
+    <div class="container">
+	    <!-- SVG Element (for Bar Chart), hidden on page load -->
+	    <svg id="BarChart" width="600" height="500" viewBox="0 0 600 500" display="none">
+	        
+			<!-- 4.4.0 For line's arrowhead -->
+			<defs>
+				<marker id="endarrow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+					<polygon points="0 0, 7 3.5, 0 7"/>
+				</marker>
+
+				<marker id="startarrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+					<polygon points="10 0, 10 7, 3 3.5"/>
+				</marker>
+			</defs>
+
+			<!-- 4.4.1 Fill SVG background using shapes, width 700; height 500 -->
+	        <rect class="rectBG" x="0" y="30" width="700" height="500"/>
+	        
+	        <!-- 4.4.2 Draw axis lines -->
+	        <g class="axis"> 
+		        <line id="xAxis" x1="50" y1="450" x2="550" y2="450" marker-end="url(#endarrow)"/> <!-- X-axis, width 500 -->
+		        <line id="YAxis" x1="50" y1="125" x2="50" y2="450" marker-start="url(#startarrow)"/> <!-- Y-axis. height 375 -->
+		    </g>
+			
+	        <!-- 4.4.3 For the grid(Ydistance 100), draw using path & relative coordinates -->
+	        <path id="grid" d="M 50 150 l 500 0
+	                    m 0 75 l -500 0
+						m 0 75 l 500 0
+	                    m 0 75 l -500 0"/>
+
+	        <!-- 4.4.4 Create & group the bar with same attribute. Width 150; distance between bar 100; height initial 1 (will change by input) -->
+	        <g class="bar">
+	            <!-- AT percentage bar. On mouse over, the bar will change colour and text AT percentage text will appear(by calling the changeTextBarChart function and pass the input to the function) --> 
+	            <rect id="atBar" x="125" y="450" width="150" height="1" onmouseover="changeTextBarChart(sequence)" data-tooltip-text="data">
+	                <set attributeName="fill" to = "red" begin = "atBar.mouseover" end = "atBar.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "gcBar.mouseover" end = "gcBar.mouseout" />
+	            </rect>
+
+	             <!-- GC percentage bar. On mouse over, the bar will change colour and text AT percentage text will appear(by calling the changeTextBarChart function and pass the input to the function) --> 
+	            <rect id="gcBar" x="325" y="450" width="150" height="1" onmouseover="changeTextBarChart(sequence)" data-tooltip-text="data">
+	                <set attributeName="fill" to = "green" begin = "gcBar.mouseover" end = "gcBar.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "atBar.mouseover" end = "atBar.mouseout" />
+	            </rect>
+	        </g>
+
+	        <!-- 4.4.5 Graph Labelling -->
+	        <g class="label">
+	            <!-- 4.4.5a Main title, text changes color & underline on mouseover -->
+	            <text class="titleGraph"  id="titleBar" x="110" y="70" font-size="30" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
+	            	Percentage of AT vs GC content
+	                <set attributeName="fill" to = "blue" begin = "titleBar.mouseover" end = "titleBar.mouseout" />
+	            </text>
+
+	            <!-- 4.4.5b Bar label -->
+	            <text x="190" y="470"> AT </text>
+	            <text x="390" y="470"> GC </text>
+				<text x="10" y="155"> 100 </text>
+				<text x="15" y="230"> 75 </text>
+				<text x="15" y="305"> 50 </text>
+				<text x="15" y="380"> 25 </text>
+	            <text x="20" y="455"> 0 </text>
+
+	            <!-- 4.4.5c Axis label -->
+				<g class="axisLabel">
+	            	<!-- x-Axis -->
+	                <text id="pairsBar" x="155" y="490" > Nucleotide Base Pairs (AT vs GC)
+	                	<set attributeName="fill" to = "red" begin = "pairsBar.mouseover" end = "pairsBar.mouseout" />
+	                </text>
+	                <!-- y-Axis -->
+	                <text id="contentBar" x = "10" y = "100"> Content (%) 
+	                	<set attributeName="fill" to = "red" begin = "contentBar.mouseover" end = "contentBar.mouseout" />
+	            	</text> 
+	            </g>
+	        </g>
+
+	        <!-- 4.4.6 Tooltip text box, hidden by default -->
+	        <g id="show" visibility="hidden">
+	            <rect x="2" y="2" width="30" height="30" fill="blue" opacity="0.5" rx="2" ry="2"/> <!-- the back text box, shadow -->
+	            <rect width="30" height="30" fill="white" x="2" ry="2"/> <!-- the front text box -->
+	            <text x="4" y="6"> showText </text> <!-- initial text inside text box, random (will be changed based on input) -->
+	        </g> 
+
+	        <!-- 4.4.7 JavaScript to display (4.4.6) -->
+	        <script type="text/javascript"><![CDATA[
+	        (function() { //default main function
+
+	        	// 4.4.7a Define the variables
+	            var svg = document.getElementById('BarChart'); //within the whole svg canvas
+	            var show = svg.getElementById('show'); // the tooltip text box to diplay (currently hidden)
+	            var showText = show.getElementsByTagName('text')[0]; //text in 'show'
+	            var showRects = show.getElementsByTagName('rect'); // rectangle shape in 'show'
+	            var triggers = svg.getElementsByClassName('bar'); // class that belongs variable 'svg '' 
+
+	            // 4.4.7b Define the event (mouseover & mouseout)
+	            for (var i = 0; i < triggers.length; i++){ //within bar area
+	                triggers[i].addEventListener('mousemove', funcShowText); //if mouseover, call function 'funcShowText'
+	                triggers[i].addEventListener('mouseout', funcHideText);	//if mouseout, call function 'funcHideText'
+	            } //end of 4.4.7b loop
+
+	            // 4.4.7c Function definition of 'funcShowText' (will display 4.4.7, relative to the mouse cursor within the bar area)
+	            function funcShowText(evt) { // evt - event(mouseover)
+
+	            	// To get the mouse cursor position and display text box relative to the position
+	                var CTM = svg.getScreenCTM(); // return the transform matrix used to convert document coordinates to screen coordinates
+	                var x = (evt.clientX - CTM.e + 6) / CTM.a; //get mouse cursor x-coordinate
+	                var y = (evt.clientY - CTM.f + 20) / CTM.d; //get mouse cursor y-coordinate
+	                show.setAttributeNS(null, "transform", "translate(" + x + " " + y + ")"); //make 4.4.7 move relative to mouse position
+	                show.setAttributeNS(null, "visibility", "visible"); //set the visibility of 4.4.7 as visible
+	                showText.firstChild.data = evt.target.getAttributeNS(null, "data-tooltip-text"); //updates the text to use the new value 
+
+	                // To adjust the text box size relative to the text length
+	                var length = showText.getComputedTextLength(); //get the length of the text
+	                for (var i = 0; i < showRects.length; i++) { //for each of the text
+	                    showRects[i].setAttributeNS(null, "width", length + 10); //increase the width by 10 
+	                }
+	            } //end of 4.4.7c function definition
+
+	            // 4.4.7d Function definition of 'funcHideText' (will hide 4.4.7 if mouse cursor not within the bar area)
+	            function funcHideText(evt) { //evt - event(mouseout)
+	                show.setAttributeNS(null, "visibility", "hidden"); //set the visibility of 4.4.7 as hidden
+	            } //end of 4.4.7d function definition
+	        })() //end of main function
+	    ]]></script> <!-- end of JavaScript -->
+	    </svg><br><br> <!-- end of 4.4 SVG script -->
+	</div>
+
+	<!-- 4.5 Histogram, aligned center to the page -->
+    <div class="container">
+    	<!-- SVG Element (for Histogram), hidden on page load -->
+	    <svg id="HistoGraph" width="700" height="600" viewBox="0 0 700 600" display="none">
+
+	        <!-- 4.5.0 For line's arrowhead -->
+			<defs>
+				<marker id="end_arrow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+					<polygon points="0 0, 7 3.5, 0 7"/>
+				</marker>
+
+				<marker id="start_arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+					<polygon points="10 0, 10 7, 3 3.5"/>
+				</marker>
+			</defs>
+
+			<!-- 4.5.1  Fill SVG background using shapes, width 700; height 550 -->
+	        <rect class="rectBG" x="30" y="0" width="700" height="550"/>
+
+	        <!-- 4.5.2 Draw the axis line -->
+	        <g class="axis"> 
+		        <line id="xAxis" x1="150" y1="460" x2="550" y2="460" marker-end="url(#end_arrow)"/> <!-- X-axis, width 400 -->
+		        <line id="YAxis" x1="150" y1="110" x2="150" y2="460" marker-start="url(#start_arrow)"/> <!-- Y-axis. height 350 -->
+		    </g>
+			
+			<!-- 4.5.2b For the grid(Ydistance 100), draw using path & relative coordinates -->
+	        <path id="grid" d="M 240 110 l 0 350
+	                    m 90 0 l 0 -350
+						m 90 0 l 0 350
+	                    m 90 0 l 0 -350"/>
+
+
+	        <!--  4.5.3 Create & group the bar with same attribute. height 80; weight initial 2 (will change by input). Original colour, salmon -->
+	        <g class="bar">
+	            <!-- 4.5.3a Bar A, colour of selected bar will change to green and other bar opacity reduced. Bar percentage will appear upon mouseover -->
+	            <rect id="grn" x="150" y="120" width="2" height="80" onmouseover="changeTextHistogram(sequence)" data="data"> 
+	                <set attributeName="fill" to = "green" begin = "grn.mouseover" end = "grn.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "bl.mouseover" end = "bl.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "rd.mouseover" end = "rd.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "yllw.mouseover" end = "yllw.mouseout" />
+	            </rect>
+
+	            <!-- 4.5.3b Bar T, colour of selected bar will change to blue and other bar opacity reduced. Bar percentage will appear upon mouseover -->
+	            <rect id="bl" x="150" y="200" width="2" height="80" onmouseover="changeTextHistogram(sequence)" data="data"> 
+	                <set attributeName="fill" to = "blue" begin = "bl.mouseover" end = "bl.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "grn.mouseover" end = "grn.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "rd.mouseover" end = "rd.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "yllw.mouseover" end = "yllw.mouseout" />
+	            </rect>
+
+	            <!-- 4.5.3c Bar C, colour of selected bar will change to red and other bar opacity reduced. Bar percentage will appear upon mouseover -->
+	            <rect id="rd" x="150" y="280" width="2" height="80" fill="salmon" onmouseover="changeTextHistogram(sequence)" data="data">
+	                <set attributeName="fill" to = "red" begin = "rd.mouseover" end = "rd.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "bl.mouseover" end = "bl.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "grn.mouseover" end = "grn.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "yllw.mouseover" end = "yllw.mouseout" />
+	            </rect>
+
+	            <!-- 4.5.3d Bar D, colour of selected bar will change to blue and other bar opacity reduced. Bar percentage will appear upon mouseover -->
+	            <rect id="yllw" x="150" y="360" width="2" height="80" fill="salmon" onmouseover="changeTextHistogram(sequence)" data="data"> 
+	                <set attributeName="fill" to = "yellow" begin = "yllw.mouseover" end = "yllw.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "bl.mouseover" end = "bl.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "rd.mouseover" end = "rd.mouseout" />
+	                <set attributeName="opacity" to = "0.5" begin = "grn.mouseover" end = "grn.mouseout" />
+	            </rect>
+	        </g>
+
+	        <!-- 4.5.4 Graph Labelling -->
+	        <g class="label">
+	            <!-- 4.5.4a Main title, text changes color to blue & underline on mouseover  -->
+	            <text class="titleGraph" id="titleHisto" x="50" y="40" font-size="30" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
+	            	Histogram of DNA Sequence Percentage Content 
+	            	<set attributeName="fill" to = "blue" begin = "titleHisto.mouseover" end = "titleHisto.mouseout" />
+	            </text>
+	                
+	            <!-- 4.5.4b Bar label -->
+	            <g>
+	                <!-- y-Axis -->
+					<text x="125" y="165"> A </text>
+	                <text x="125" y="165" dx="0" dy="80"> T </text>
+	                <text x="125" y="165" dx="0" dy="160"> C </text>
+	                <text x="125" y="165" dx="0" dy="240"> G </text>
+					
+					<!-- x-Axis -->
+					<text x="140" y="490"> 0 </text>
+	                <text x="140" y="490" dx="90" dy="0"> 25 </text>
+	                <text x="140" y="490" dx="180" dy="0"> 50 </text>
+	                <text x="140" y="490" dx="270" dy="0"> 75 </text>
+	                <text x="140" y="490" dx="350" dy="0"> 100 </text>
+				</g>
+
+	            <!-- 4.5.4c Axis label, text change color to red when hover -->
+	            <g class="axisLabel">
+	            	<!-- x-Axis -->
+	                <text id="contentHisto" x="290" y="520" > Content (%) 
+	                	<set attributeName="fill" to = "red" begin = "contentHisto.mouseover" end = "contentHisto.mouseout" />
+	                </text>
+	                <!-- y-Axis -->
+	                <text id="baseHisto" x = "90" y = "90"> Nucleotide Base 
+	                	<set attributeName="fill" to = "red" begin = "baseHisto.mouseover" end = "baseHisto.mouseout" />
+	            	</text> 
+	            </g>
+	        </g>
+
+	        <!-- 4.5.5 Tooltip text box, hidden by default -->
+	        <g id="show" visibility="hidden">
+	            <rect x="2" y="2" width="30" height="30" fill="blue" opacity="0.5" rx="2" ry="2"/> <!-- the back text box, shadow -->
+	            <rect width="30" height="30" fill="white" x="2" ry="2"/> <!-- the front text box -->
+	            <text x="4" y="6"> showText </text> <!-- initial text inside text box, random (will be changed based on input) -->
+	        </g> 
+
+	        <!-- 4.5.6 JavaScript to display (4.4.6) -->
+	        <script type="text/javascript"><![CDATA[
+	        (function() { //default main function
+
+	        	// 4.5.6a Define the variables
+	            var svg = document.getElementById('HistoGraph'); //within the whole svg canvas
+	            var show = svg.getElementById('show'); // the tooltip text box to diplay (currently hidden)
+	            var showText = show.getElementsByTagName('text')[0]; //text in 'show'
+	            var showRects = show.getElementsByTagName('rect'); // rectangle shape in 'show'
+	            var triggers = svg.getElementsByClassName('bar'); // class that belongs variable 'svg '' 
+
+	            // 4.5.6b Define the event (mouseover & mouseout)
+	            for (var i = 0; i < triggers.length; i++){ //within bar area
+	                triggers[i].addEventListener('mousemove', funcShowText); //if mouseover, call function 'funcShowText'
+	                triggers[i].addEventListener('mouseout', funcHideText);	//if mouseout, call function 'funcHideText'
+	            } //end of 4.4.7b loop
+
+	            // 4.5.6c Function definition of 'funcShowText' (will display 4.5.6, relative to the mouse cursor within the bar area)
+	            function funcShowText(evt) { // evt - event(mouseover)
+
+	            	// To get the mouse cursor position and display text box relative to the position
+	                var CTM = svg.getScreenCTM(); // return the transform matrix used to convert document coordinates to screen coordinates
+	                var x = (evt.clientX - CTM.e + 6) / CTM.a; //get mouse cursor x-coordinate
+	                var y = (evt.clientY - CTM.f + 20) / CTM.d; //get mouse cursor y-coordinate
+	                show.setAttributeNS(null, "transform", "translate(" + x + " " + y + ")"); //make 4.5.6, move relative to mouse position
+	                show.setAttributeNS(null, "visibility", "visible"); //set the visibility of 4.5.6, as visible
+	                showText.firstChild.data = evt.target.getAttributeNS(null, "data"); //updates the text to use the new value 
+
+	                // To adjust the text box size relative to the text length
+	                var length = showText.getComputedTextLength(); //get the length of the text
+	                for (var i = 0; i < showRects.length; i++) { //for each of the text
+	                    showRects[i].setAttributeNS(null, "width", length + 10); //increase the width by 10 
+	                }
+	            } //end of 4.5.6c function definition
+
+	            // 4.5.6d Function definition of 'funcHideText' (will hide 4.4.7 if mouse cursor not within the bar area)
+	            function funcHideText(evt) { //evt - event(mouseout)
+	                show.setAttributeNS(null, "visibility", "hidden"); //set the visibility of 4.5.6, as hidden
+	            } //end of 4.5.6d function definition
+	        })() //end of main function
+	    ]]></script> <!-- end of JavaScript -->
+	    </svg><br><br> <!-- end of 4.5 SVG script -->
+	</div>
+
+
+	<!-- Back to Homepage Button Section -->
+	<a class="button"  href="javascript:history.back()">Back To Homepage</a> <!-- alternative for href: "home.html" -->
+
+</body> <!-- End of body -->
+
+<!-- ################################ 5. FOOTER ###################################### -->
+<footer class="footer">
+	<div class="container">
+		<p class="text-muted">Copyright &copy; 2020 | Designed by <a href="about.html" target="_blank" style="text-decoration: none; color: purple"> Putri, Mimi, Farah, Samantha, Jian Di</a></p>
+	</div>
+</footer>
+
+</html> 

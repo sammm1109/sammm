@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<!--
+ SIV3014 GROUP PROJECT
+ Group B | Semester 1, Session 2020/2021
+ 
+ Group Members:
+ 1.	17141261	PUTRI NUR FATIN BINTI AMIR RUDIN
+ 2.	17075500	NOR MIMI FARAR HANA BINTI MOHD POZI
+ 3.	17168579	FARAH AISHA BINTI BAHRON
+ 4.	17160168	SAMANTHA SOH ERN JIE
+ 5.	17100334	LEE JIAN DI
+
+ File: about.html
+ - Write details regarding the project and its group members.
+
+PSEUDOCODE:
+1.	Create <html> tag to define the HTML document
+2.	Create <title> tag to define the title for the HTML document
+3.	Define the header using <head> tag. The header contains:
+	- Embedded link to online-imported external style sheet css file (aboutstyle.css) for attractive styling
+	- Embedded link to local external CSS style sheet
+4.	Create <body> tag to define the document's body. 
+	The body is divided into 4 sections, each of which with classes defined in external CSS file: 
+	4.1	Page content: provide user with some introduction about the website
+	4.2	'Back to Homepage' button: inline Javascript and CSS for user to return to 'Home' page (home.html)
+	4.3	Background image: make webpage to appear more interesting and beautiful
+	4.4	Footer: provide user with copyright information and links to 'About Us' page
+	
+-->
+
+<html lang="en">	<!-- Open html tag -->
+
+  <head>	<!-- Open head tag -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="aboutstyle.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <title>Nucleotide Calculator: About Us</title>
+  </head>
+  
+  <body>
+    <div class="grid-wrapper">
+	  
+	  <!-- Content Section -->
+      <div class="aside"  style="text-align:center;">
+        <h1>Nucleotide Calculator</h1>                                                         <!-- Main title -->
+        <h3>About Page</h3>															  <!-- Sub main title -->
+        <p>
+			This project is part of the requirement for the course <b>Graphics and Data Visualization in Bioinformatics</b> with the subject code <b>SIV3014</b>.
+			<br><br>
+			<b>Group Project | SIV3014 | Semester 1, 2020/2021</b>
+			<br><br>
+			17141261 - PUTRI NUR FATIN BINTI AMIR RUDIN
+			<br>
+			17075500 - NOR MIMI FARAR HANA BINTI MOHD POZI
+			<br>
+			17168579 - FARAH AISHA BINTI BAHRON
+			<br>
+			17160168 - SAMANTHA SOH ERN JIE
+			<br>
+			17100334 - LEE JIAN DI
+		</p>
+      </div>
+	  
+	  <!-- 'Back to Homepage' Button Section -->
+	  <a class="button"  href="javascript:history.back()" style="text-decoration: none; position: absolute; top: 450px; left: 10px;">Back To Homepage</a> <!-- alternative for href: "home.html" -->
+
+	  
+	  <!-- Background image Section -->
+      <div class="background"></div>                            <!-- Background image -->
+	  
+	  <!-- Footer Section -->
+      <div class="footer">
+		<p>Copyright &copy; 2020 | Designed by <a href="about.html" target="_blank"> Putri, Mimi, Farah, Samantha, Jian Di</a></p>
+      </div>
+    
+	</div>
+
+
+</body>
+</html>

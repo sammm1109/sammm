@@ -1,0 +1,83 @@
+/* IMPLEMENTATION PAGE EXTERNAL CSS FILE
+
+PSEUDOCODE:
+External CSS Style to define style of SVG element in 4.4 & 4.6. Consists of : 
+    > 1. Id selector (using "#")
+    	- use for gridline (refer to 4.4.3) & tooltip text box (refer to 4.4.6 & 4.5.5)
+    > 2. Class selector (using ".")
+        - use for :
+        	+ making div element center (refer to 4.4 & 4.5) 
+        	+ SVG white background (refer to 4.4.1 & 4.5.1)
+        	+ axis line (refer to 4.4.2 & 4.5.2)
+        	+ the bars in histogram & bar chart (refer to 4.4.4 & 4.5.3)
+        	+ graph label text colour (refer to 4.4.5 & 4.5.4)
+        	+ graph title text (refer to 4.4.5a & 4.5.4a)
+        	+ graph axis label (refer to 4.4.5c & 4.5.4c)
+
+*/
+
+/* Id selector */
+#grid {
+	stroke: #ddd; 
+	stroke-width: 2;
+} /* refer to 4.4.3 */
+
+#show {
+    dominant-baseline: hanging;
+} /* refer to 4.4.6 & 4.5.5 */
+
+/* Class selector */
+.container {
+  display: flex;
+  justify-content: center;
+} /* refer to 4.4 & 4.5 */
+
+.rectBG {
+	fill: white;
+} /* refer to 4.4.1 & 4.5.1 */
+
+.axis {
+	stroke: black;
+	stroke-width: 2;
+} /* refer to 4.4.2 & 4.5.2 */
+
+.bar {
+    fill: salmon;
+    opacity: 1;
+    stroke: black;
+	stroke-width: 0.5;
+} /* refer to 4.4.4 & 4.5.3 */
+
+.label {
+	fill: #444;;
+} /* refer to 4.4.5 & 4.5.4 */
+
+.titleGraph {
+	font-weight: bold; 
+	font-size: 30;
+   	text-decoration: none; 
+} /* refer to 4.4.5a & 4.5.4a */
+
+.axisLabel {
+	font-weight: bold;
+	font-size: 20px;
+} /* refer to 4.4.5c & 4.5.4c */
+
+/* Additional style: Define the 'Back to Homepage' button styling */
+.button {
+  max-width: 30%;                                  /* set the maximum width of button */
+  padding: 10px;                                   /* set all of the four padding positions */
+  font-size: 1rem;                                 /* set the font size used */
+  border-radius: 20px;                             /* set all of the four rounded corner side button */
+  text-align: center;                              /* align the text on center */
+  font-weight: 700;                                /* make the font become thicker */
+  background-color: #00ff00;                       /* set the background color as lime */
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),     /* */
+    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  color: white;                                    /* set the font color as white */
+  z-index: 5;                                      /* make the link to be overlayed (to become in front of the backgorund) */
+  text-decoration: none; 
+  position: absolute; 
+  top: 180px; 
+  right: 20px;
+}
